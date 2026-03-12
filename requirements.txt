@@ -1,0 +1,12 @@
+customtkinter
+moviepy
+edge-tts
+yt-dlp
+requests
+g4f
+deep-translator
+proglog
+imageio-ffmpeg
+Pillow
+numpy
+pygame
