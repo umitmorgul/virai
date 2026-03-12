@@ -1,0 +1,35 @@
+name: VIRAI Windows Derleyici
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Manuel tetikleme butonu ekler
+
+jobs:
+  build:
+    runs-on: windows-latest # GitHub'ın Windows 11 sunucusunu çağırıyoruz
+
+    steps:
+    - name: Kodu Sunucuya Çek
+      uses: actions/checkout@v4
+
+    - name: Python 3.11 Kurulumu
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # MoviePy ve CustomTkinter için en stabil sürüm
+
+    - name: Gerekli Kütüphaneleri Yükle
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: PyInstaller ile EXE Derle
+      run: |
+        pyinstaller --noconsole --name "VIRAI_Studio" --icon="icon.ico" --add-data "viraiBrand;viraiBrand" --copy-metadata imageio --copy-metadata moviepy --copy-metadata imageio_ffmpeg virai14.py
+
+    - name: Derlenen Uygulamayı Buluta Kaydet
+      uses: actions/upload-artifact@v4
+      with:
+        name: VIRAI_Studio_Windows_Surumu
+        path: dist/VIRAI_Studio/ # Çıkan dosyayı sıkıştırıp bize verecek
